@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\MER\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\RolesTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(UserTableSeeder::class);
+        User::factory(8)->create(); //Provisional
+
         $this->call(RolesTableSeeder::class);
         $this->call(EstadosTicketTableSeeder::class);
         $this->call(EstadosReservaTableSeeder::class);
@@ -29,13 +31,9 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartamentosTableSeeder::class);
         $this->call(CiudadesTableSeeder::class);
         $this->call(TiposDocUsuarioTableSeeder::class);
+        $this->call(ModelHasRoleTableSeeder::class);
+        $this->call(RolesAndPermissionsSeeder::class);
 
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'email' => 'test@example.com',
-        ]);
-
-        $this->call(PruebaViajeSeeder::class);
+        $this->call(DatosPruebaSeeder::class); //Provisional
     }
 }

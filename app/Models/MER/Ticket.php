@@ -13,15 +13,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $feccie
  * @property string $asu
  * @property string $des
- * @property string $urlpdf
- * @property string $res
+ * @property string|null $urlpdf
+ * @property string|null $urlpdfres
+ * @property string|null $res
  * @property int $idusu
+ * @property int|null $idususop
  * @property int $codesttic
  * @property int $codpritic
+ * @property int $codres
  * 
  * @property User $user
  * @property EstadoTicket $estado_ticket
  * @property PrioridadTicket $prioridad_ticket
+ * @property Reserva $reserva
  *
  * @package App\Models\MER
  */
@@ -39,10 +43,13 @@ class Ticket extends Model
 		'asu' => 'string',
 		'des' => 'string',
 		'urlpdf' => 'string',
+		'urlpdfres' => 'string',
 		'res' => 'string',
 		'idusu' => 'int',
+		'idususop' => 'int',
 		'codesttic' => 'int',
-		'codpritic' => 'int'
+		'codpritic' => 'int',
+		'codres' => 'int'
 	];
 
 	protected $fillable = [
@@ -53,15 +60,22 @@ class Ticket extends Model
 		'asu',
 		'des',
 		'urlpdf',
+		'urlpdfres',
 		'res',
 		'idusu',
+		'idususop',
 		'codesttic',
-		'codpritic'
+		'codpritic',
+		'codres'
 	];
 
 	public function user()
 	{
-		return $this->belongsTo(User::class, 'idusu', 'cod');
+		return $this->belongsTo(User::class, 'idusu', 'id');
+	}
+	public function user_soporte()
+	{
+		return $this->belongsTo(User::class, 'idususop', 'id');
 	}
 	public function estado_ticket()
 	{
@@ -70,5 +84,9 @@ class Ticket extends Model
 	public function prioridad_ticket()
 	{
 		return $this->belongsTo(PrioridadTicket::class, 'codpritic', 'cod');
+	}
+	public function reserva()
+	{
+		return $this->hasOne(Reserva::class, 'cod', 'codres');
 	}
 }

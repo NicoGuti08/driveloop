@@ -49,7 +49,8 @@ class Vehiculo extends Model
 		'codcla' => 'int',
 		'codcom' => 'int',
 		'codciu' => 'int',
-		'prerent' => 'decimal:2'
+		'prerent' => 'decimal:2',
+		'disp' => 'bool',
 	];
 
 	protected $fillable = [
@@ -65,7 +66,8 @@ class Vehiculo extends Model
 		'codcla',
 		'codcom',
 		'codciu',
-		'prerent'
+		'prerent',
+		'disp',
 	];
 
 	public function clase()
@@ -132,5 +134,22 @@ class Vehiculo extends Model
 	public function fotos()
 	{
 		return $this->hasMany(FotoVehiculo::class, 'codveh', 'cod');
+	}
+
+	/**
+	 * Verifica si el vehículo tiene aprobados sus documentos (Tarjeta, SOAT, Tecno).
+	 * idtipdocveh = 1 Tarjeta de Propiedad
+	 * idtipdocveh = 2 SOAT
+	 * idtipdocveh = 3 Técnico-Mecánica
+	 */
+	public function isVerified(): bool
+	{
+		$docs = $this->documentos_vehiculos;
+		
+		$hasTarjeta = $docs->where('idtipdocveh', 1)->where('estado', 'APROBADO')->isNotEmpty();
+		$hasSoat    = $docs->where('idtipdocveh', 2)->where('estado', 'APROBADO')->isNotEmpty();
+		$hasTecno   = $docs->where('idtipdocveh', 3)->where('estado', 'APROBADO')->isNotEmpty();
+
+		return $hasTarjeta && $hasSoat && $hasTecno;
 	}
 }
