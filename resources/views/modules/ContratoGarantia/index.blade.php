@@ -34,10 +34,17 @@
 
                 <div class="flex flex-col items-end mt-4 md:mt-0 space-y-2 w-full md:w-auto">
                     {{-- Botón Ver PDF / Generar PDF --}}
-                    <a href="{{ route('contrato.descargar', $reserva->cod) }}" target="_blank"
-                        class="btn btn-sm {{ $reserva->contrato ? 'btn-outline-primary' : 'btn-primary' }}">
-                        {{ $reserva->contrato ? '📄 Ver PDF' : '📄 Generar PDF' }}
-                    </a>
+                    <div class="flex space-x-2">
+                        <a href="{{ route('contrato.descargar', $reserva->cod) }}" target="_blank"
+                            class="btn btn-sm {{ $reserva->contrato ? 'btn-outline-primary' : 'btn-primary' }}">
+                            {{ $reserva->contrato ? '📄 Ver PDF' : '📄 Generar PDF' }}
+                        </a>
+                        {{-- Botón Generar Acta de Entrega --}}
+                        <a href="{{ route('acta.entrega.descargar', $reserva->cod) }}" target="_blank"
+                            class="btn btn-sm btn-outline-info">
+                            📝 Acta de Entrega
+                        </a>
+                    </div>
                     {{-- Botón Enviar por Email --}}
                     <form action="{{ route('contrato.enviar', $reserva->cod) }}" method="POST" class="d-inline">
                         @csrf

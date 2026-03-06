@@ -64,6 +64,16 @@ class ContratoGarantiaController extends Controller
         return $pdf->stream("contrato_{$reserva->cod}.pdf");
     }
 
+    public function descargarActaEntrega($codReserva)
+    {
+        $reserva = Reserva::with(['user', 'vehiculo.marca', 'vehiculo.linea', 'contrato'])->findOrFail($codReserva);
+
+        // Generar PDF
+        $pdf = Pdf::loadView('pdf.acta_entrega', compact('reserva'));
+
+        return $pdf->stream("acta_entrega_reserva_{$reserva->cod}.pdf");
+    }
+
     public function enviarContrato($codReserva)
     {
         $reserva = Reserva::with(['user', 'vehiculo.marca', 'vehiculo.linea', 'contrato'])->findOrFail($codReserva);
